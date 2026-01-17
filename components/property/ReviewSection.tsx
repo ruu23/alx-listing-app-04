@@ -1,0 +1,43 @@
+import { PropertyProps } from "@/interfaces/index";
+const ReviewSection: React.FC<{ property: PropertyProps; reviews: any[] }> = ({
+  property,
+  reviews,
+}) => {
+  return (
+    <div className="mt-10 border-b">
+      <h3 className="text-[30px] font-semibold">
+        <span className="font-semibold flex flex-wrap gap-2">
+          <img src="/assets/Star.svg" alt="stars" />
+          {property.rating}
+          <span className="text-gray-400 font-normal">
+            ({property.reviews.length} reviews)
+          </span>
+        </span>
+      </h3>
+      <div className="grid grid-cols-2 gap-10 my-5">
+        {reviews.map((review, index) => (
+          <div key={index} className="pb-4 mb-4">
+            <div className="flex items-center">
+              <img
+                src={review.avatar}
+                alt={review.name}
+                className="rounded-full mr-4 mb-4"
+              />
+              <div>
+                <p className="font-semibold text-[27px]">{review.name}</p>
+                <p className="font-semibold text-[20px] text-gray-400">{review.period}</p>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2 font-semibold">
+              <p className="">{review.date}</p>
+              <p className="text-gray-400">• {review.tripType}</p>
+            </div>
+            <p className="text-[19px]">{review.comment}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default ReviewSection;
