@@ -12,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     const fetchProperties = async()=> {
       try {
-        const respone = await axios.get<PropertyProps[]>('/api/properties')
+        const respone = await axios.get<PropertyProps[]>(`${process.env.NEXT_PUBLIC_API_BASE_URL}properties`)
         setProperties(respone.data)
       }
       catch(error){

@@ -9,13 +9,13 @@ import axios from "axios";
 export default function PropertyPage() {
   const router = useRouter();
   const { id } = router.query;
-  const [property, setProperty] = useState(null)
+  const [property, setProperty] = useState<PropertyProps | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchProperty = async() => {
       try{
-        const respone = await axios.get(`/api/properties/${id}`)
+        const respone = await axios.get<PropertyProps>(`/api/properties/${id}`)
         setProperty(respone.data)
       }
       catch(error){
@@ -42,7 +42,7 @@ export default function PropertyPage() {
       <div className="grid grid-cols-3 gap-5">
         <div className="col-span-2">
           <PropertyDetail property={property} part="bottom"/>
-          <ReviewSection reviews={property.reviews || []} property={property}/>
+          <ReviewSection propertyId={property.id} rating={property.rating} />
         </div>
         <div className="col-span-1">
           <div className="sticky top-8">

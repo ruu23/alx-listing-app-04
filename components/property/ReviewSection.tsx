@@ -1,8 +1,15 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import type { Review } from "@/interfaces"; 
+import Image from "next/image";
 
-const ReviewSection = ({ propertyId }) => {
-  const [reviews, setReviews] = useState([]);
+type Props = {
+  propertyId: string | number;
+  rating: number;
+};
+
+const ReviewSection = ({ propertyId, rating }:Props) => {
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,10 +34,10 @@ const ReviewSection = ({ propertyId }) => {
     <div className="mt-10 border-b">
       <h3 className="text-[30px] font-semibold">
         <span className="font-semibold flex flex-wrap gap-2">
-          <img src="/assets/Star.svg" alt="stars" />
-          {property.rating}
+          <Image src="/assets/Star.svg" alt="stars" />
+          {rating}
           <span className="text-gray-400 font-normal">
-            ({property.reviews.length} reviews)
+            ({reviews.length} reviews)
           </span>
         </span>
       </h3>
@@ -38,7 +45,7 @@ const ReviewSection = ({ propertyId }) => {
         {reviews.map((review, index) => (
           <div key={index} className="pb-4 mb-4">
             <div className="flex items-center">
-              <img
+              <Image
                 src={review.avatar}
                 alt={review.name}
                 className="rounded-full mr-4 mb-4"

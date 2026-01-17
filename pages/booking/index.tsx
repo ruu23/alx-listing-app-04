@@ -3,6 +3,8 @@ import OrderSummary from "@/components/booking/OrderSummary";
 import Link from "next/link";
 import Image from "next/image";
 import arrowLeft from '@/public/assets/Arrow Left.svg'
+import { useState } from "react";
+import axios from "axios";
 
 export default function BookingPage() {
   const [formData, setFormData] = useState({
@@ -17,9 +19,9 @@ export default function BookingPage() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -48,7 +50,7 @@ export default function BookingPage() {
       </button>
       {error && <p className="text-red-500">{error}</p>}
     </form>
-        <OrderSummary bookingDetails={bookingDetails}/>
+        <OrderSummary bookingDetails={formData}/>
       </div>
     </div>
   );
