@@ -1,15 +1,40 @@
-import { PROPERTYLISTINGSAMPLE } from "@/constants/index";
 import { useRouter } from "next/router";
 import PropertyDetail from "@/components/property/PropertyDetail";
 import BookingSection from "@/components/property/BookingSection";
 import ReviewSection from "@/components/property/ReviewSection";
+import { useEffect, useState } from "react";
+import { PropertyProps } from "@/interfaces";
+import axios from "axios";
 
 export default function PropertyPage() {
   const router = useRouter();
   const { id } = router.query;
-  const property = PROPERTYLISTINGSAMPLE.find((item) => item.name === id);
+  const [property, setProperty] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  if (!property) return <p>Property not found</p>;
+  useEffect(() => {
+    const fetchProperty = async() => {
+      try{
+        const respone = await axios.get(`/api/properties/${id}`)
+        setProperty(respone.data)
+      }
+      catch(error){
+        console.error("Error fetching property details:", error);
+      }
+      finally{
+        setLoading(false)
+      }
+    }
+    fetchProperty()
+  }, [id])
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!property) {
+    return <p>Property not found</p>;
+  }
 
   return (
     <div className="p-11">
