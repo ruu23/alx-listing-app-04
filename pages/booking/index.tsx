@@ -5,12 +5,33 @@ import Image from "next/image";
 import arrowLeft from '@/public/assets/Arrow Left.svg'
 
 export default function BookingPage() {
-  const bookingDetails = {
-    propertyName: "Villa Arrecife Beach House",
-    price: 7500,
-    bookingFee: 65,
-    totalNights: 3,
-    startDate: "24 August 2024",
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    cardNumber: "",
+    expirationDate: "",
+    cvv: "",
+    billingAddress: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.post("/api/bookings", formData);
+      alert("Booking confirmed!");
+    } catch (error) {
+      setError("Failed to submit booking.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -20,7 +41,13 @@ export default function BookingPage() {
         <h1 className="text-[#34967C] font-bold text-[25px] hover:border-[#34967C] border-b-2 py-5">Booking</h1>
       </div>
       <div className=" container mx-auto p-6 grid grid-cols-2 gap-6">
-        <BookingForm />
+        <form onSubmit={handleSubmit}>
+      {/* Form fields for booking details */}
+      <button type="submit" disabled={loading}>
+        {loading ? "Processing..." : "Confirm & Pay"}
+      </button>
+      {error && <p className="text-red-500">{error}</p>}
+    </form>
         <OrderSummary bookingDetails={bookingDetails}/>
       </div>
     </div>
